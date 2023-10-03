@@ -28,14 +28,16 @@
     <input type="password" th:field="*{password}" , id="password">
     <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" >Pass error</div>
     <br/>
-    <label for="roles">Enter role: </label>
-    <input type="checkbox" th:field="*{roles}" th:value="${}"   id="roles"/>
-    <br><br>
+    <label for="roles"> Roles: </label>
+    <select multiple th:field="*{roles}" id="roles">
+        <option th:each="role : ${rolesDB}" th:value="${role.name}" th:text="${role.name}" ></option>
+    </select>
     <br/>
     <input type="submit" value="OK" />
-<!--    th:field="*{roles}" value="ROLE_ADMIN"-->
-
-
+    <br/>
+    <br/>
+    <br/>
+        <input type="button" value="Logout"  onclick="window.location.href='/logout'"/>
 </form>
 
 </body>

@@ -26,33 +26,28 @@
             <td th:utext="${user.getEmail}">...</td>
             <td th:utext="${user.getRoles}">...</td>
             <td>
-<!--                <label>-->
-<!--                    <a th:href="@{/admin/users/edit(userId=${user.getId})}">-->
-<!--                        <input th:type="button" value="Edit" />-->
-<!--                    </a>-->
-<!--                </label>-->
                 <form th:action="@{users/edit}">
                     <input type="hidden" name="userId" th:value="${user.getId}">
                     <button type="submit">Edit</button>
                     <br><br>
                 </form>
 
-<!--                <label>-->
-<!--                    <a th:href="@{users/delete(userId=${user.getId})}">-->
-<!--                        <input th:type="button" value="Delete" />-->
-<!--                    </a>-->
-<!--                </label>-->
-
                 <form th:action="@{users/delete}">
                     <input type="hidden" name="userId" th:value="${user.getId}">
                     <button type="submit">Delete</button>
                 </form>
             </td>
-
         </tr>
     </table>
     <br/>
     <input type="button" value="Add"  onclick="window.location.href='/admin/users/new'"/>
+    <br/>
+    <br/>
+    <br/>
+        <div>
+        <input type="button" value="My details" onclick="window.location.href='/user'">
+        <input type="button" value="Logout"  onclick="window.location.href='/logout'"/>
+        </div>
 </div>
 </body>
 </html>

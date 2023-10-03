@@ -4,8 +4,9 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -13,7 +14,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -25,10 +25,17 @@ public class UserServiceImpl implements UserService{
     @Autowired
     public UserServiceImpl(UserDAO userDAO){
         this.userDAO = userDAO;
+
+    }
+    @Override
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     public void addUser(User user) {
+        String pass = passwordEncoder().encode(user.getPassword());
+        user.setPassword(pass);
         userDAO.addUser(user);
     }
 
@@ -63,6 +70,7 @@ public class UserServiceImpl implements UserService{
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername()
                 ,user.getPassword(), user.getAuthorities());
+
     }
 
 //    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
