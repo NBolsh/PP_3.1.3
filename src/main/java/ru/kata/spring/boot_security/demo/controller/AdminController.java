@@ -6,16 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private UserService userService;
     private RoleService roleService;
+
+    private String userInfo = "users/userInfo";
+
 
 
     @Autowired
@@ -35,14 +41,18 @@ public class AdminController {
     public String newUser(Model model) {
         model.addAttribute("user",new User());
         model.addAttribute("rolesDB", roleService.showRoles());
-        return "users/userInfo";
+        return userInfo;
     }
 
     @PostMapping("/users")
-    public String addUser(@ModelAttribute("user") User user,
-                          BindingResult bindingResult){
-
-        if (bindingResult.hasErrors()) { return "users/userInfo"; }
+    public String addUser(@ModelAttribute("user") @Valid User user,
+                          BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("org.springframework.validation.BindingResult.user", bindingResult);
+            model.addAttribute("user", user);
+            model.addAttribute("rolesDB", roleService.showRoles());
+            return userInfo;
+        }
         userService.addUser(user);
         return "redirect:/admin/users";
     }
@@ -52,7 +62,7 @@ public class AdminController {
                            Model model){
         model.addAttribute("user", userService.findUserById(id));
         model.addAttribute("rolesDB", roleService.showRoles());
-        return "users/userInfo";
+        return userInfo;
     }
 
     @GetMapping("users/delete")

@@ -21,6 +21,7 @@ public class UserDAOImpl implements UserDAO{
     @Transactional
     public void addUser(User user) {
         em.merge(user);
+        em.flush();
     }
 
     @Override
@@ -51,10 +52,5 @@ public class UserDAOImpl implements UserDAO{
         return Optional.ofNullable(em.createQuery(que, User.class).setParameter("email", email)
                 .getSingleResult());
     }
-
-//    @Override
-//    public List<Role> showUserRoles(User user){
-//
-//    }
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User Info</title>
@@ -9,7 +9,7 @@
 <form th:method="post" th:action="@{/admin/users}" th:object="${user}">
     <input type="hidden" th:field="*{id}">
     <label for="name"> Name: </label>
-    <input type="text" th:field="*{name}" , id="name" >
+    <input type="text" th:field="*{name}"  id="name" >
     <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" >Name error</div>
     <br/>
     <label for="surname"> Surname: </label>
